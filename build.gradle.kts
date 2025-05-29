@@ -10,6 +10,13 @@ android {
         enable = true
     }
 
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+
+
     defaultConfig {
         applicationId = "android.nome.etimpamcauam.preferenciadecores"
         minSdk = 24
