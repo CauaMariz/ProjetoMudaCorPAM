@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences: SharedPreferences;
     lateinit var binding : ActivityMainBinding
 
-    //SLIDE43
 
     companion object{
         const val NOME_ARQUIVO = "arquivo_prefs.xml";
@@ -49,17 +48,39 @@ class MainActivity : AppCompatActivity() {
             salvarCor(cor);}
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val preferences = getSharedPreferences(NOME_ARQUIVO, MODE_PRIVATE)
+        val cor = preferences.getString("cor", "")
+
+        if (cor!!.isNotEmpty()) {
+            binding.layoutPrincipal.setBackgroundColor(Color.parseColor(cor))
+        }
+    }
+    
     private fun salvarCor(cor: String){
         binding.layoutPrincipal.setBackgroundColor(Color.parseColor(cor));
 
-        binding.btnTrocar.setOnClickListener(){
+        binding.btnTrocar.setOnClickListener(){ view ->
 
             val preferences = getSharedPreferences(NOME_ARQUIVO, MODE_PRIVATE);
             val editor = preferences.edit();
             editor.putString("cor",cor);
             editor.apply();
 
-            Toast.makeText(this, "Cor salva no arquivo de cores", Toast.LENGTH_SHORT).show()
+            snackBar(view);
         }
+    }
+
+    private fun snackBar(view: View){
+
+        val snackBar = Snackbar.make(view , "Cor de fundo alterada!" , Snackbar.LENGTH_INDEFINITE);
+        snackBar.setAction("OK"){}
+
+        snackBar.setActionTextColor(Color.BLUE);
+        snackBar.setBackgroundTint(Color.LTGRAY);
+        snackBar.setTextColor(Color.GREEN);
+        snackBar.show();
     }
 }
